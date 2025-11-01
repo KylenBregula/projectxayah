@@ -1,0 +1,23 @@
+{
+    "lights":[
+        {
+            "id": 1,
+            "name": "Living Room Light",
+            "status": "off"
+        },
+        {
+            "id": 2,
+            "name": "Bedroom Light",
+            "status": "on"
+        }
+    ],    
+
+    "thermostats":[
+        {
+            "id": 1,
+            "name": "House Thermostat",
+            "currentTemperature": 72,
+            "mode": "heating"
+        }
+    ]
+}
