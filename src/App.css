@@ -1,38 +1,123 @@
+body {
+  background-color: #f5f6fa;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #2f3640;
+}
+
 .App {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.header {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.subtitle {
+  color: #718093;
+  margin-top: -10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.section {
+  margin-bottom: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+h2 {
+  color: #273c75;
+  border-bottom: 2px solid #dcdde1;
+  padding-bottom: 5px;
+}
+
+.card-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card.on {
+  border-left: 5px solid #44bd32;
+}
+
+.card.off {
+  border-left: 5px solid #e84118;
+}
+
+.toggle-btn {
+  background-color: #273c75;
   color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-.App-link {
-  color: #61dafb;
+.toggle-btn:hover {
+  background-color: #40739e;
+  transform: scale(1.03);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card.on span {
+  color: #44bd32;
+  font-weight: bold;
 }
+
+.card.off span {
+  color: #e84118;
+  font-weight: bold;
+}
+
+.temp-slider {
+  width: 100%;
+  margin-top: 10px;
+  accent-color: #e1b12c;
+}
+
+.temp-slider::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  background: #e1b12c;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.temp-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.mode-select {
+  margin-left: 10px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #dcdde1;
+  cursor: pointer;
+  background-color: #f5f6fa;
+  color: #2f3640;
+  font-weight: 500;
+}
+
+.mode-select:hover {
+  border-color: #40739e;
+}
+
