@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ChatBox from './chatbox';
 import './App.css';
 
-// PLEASE PLEASE PLEASE 
+// APP
 
 
 function App() {
