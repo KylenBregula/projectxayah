@@ -160,9 +160,11 @@ function App() {
       {/* Chat box */}
       <ChatBox onSend={handleCommand} />
 
-      {/* Logs */}
+      {/* Logs label */}
+      <div className="logs-label">Logs</div>
+
+      {/* Logs panel */}
       <div className="log-panel">
-        <h2>Logs</h2>
         <ul>
           {logs.map((log, i) => (
             <li key={i}>
