@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import ChatBox from './chatbox';
 import './App.css';
 
-// test 
-// feature
-
 function App() {
   // Climate controls
   const [temperature, setTemperature] = useState(72);
