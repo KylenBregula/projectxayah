@@ -18,7 +18,7 @@ function ChatBox({ onSend }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={onKeyDown}
-        placeholder="Type commands e.g. 'turn kitchen on', 'hot', 'increase fan', 'turn air purifier off'"
+        placeholder="Type commands e.g. 'turn kitchen on'"
       />
       <button onClick={send}>Send</button>
     </div>

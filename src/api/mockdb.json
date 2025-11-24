@@ -1,9 +1,0 @@
-{
-  "lights": [
-    { "id": 1, "name": "Living Room", "status": "off" },
-    { "id": 2, "name": "Bedroom", "status": "off" }
-  ],
-  "thermostats": [
-    { "id": 1, "name": "Main AC", "currentTemperature": 72, "mode": "Auto" }
-  ]
-}

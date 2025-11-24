@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #1f2937; /* dark mode default */
+  background-color: #1f2937;
   color: #f3f4f6;
   transition: background 0.3s, color 0.3s;
 }
@@ -17,7 +17,7 @@ body.light {
   max-width: 900px;
   margin: 40px auto;
   padding: 20px;
-  background: transparent; /* no white box */
+  background: transparent;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -42,23 +42,24 @@ body.light {
   color: #6b7280;
 }
 
-/* Dark mode toggle button */
+/* Dark mode toggle button - SLEEK UPDATE */
 .dark-toggle {
   padding: 10px 20px;
-  border-radius: 12px;
-  border: none;
-  background-color: #3b82f6;
-  color: #fff;
+  border-radius: 20px;
+  border: 2px solid #3b82f6;
+  background-color: transparent;
+  color: #3b82f6;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: all 0.2s ease-in-out;
 }
 
 .dark-toggle:hover {
-  background-color: #2563eb;
+  background-color: #3b82f6;
+  color: #fff;
 }
 
-/* Card grid */
+/* Card grid - Responsive Layout */
 .card-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -66,9 +67,15 @@ body.light {
   margin-bottom: 30px;
 }
 
+@media (max-width: 600px) {
+  .card-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Card styles */
 .card {
-  position: relative; /* needed for the indicator */
+  position: relative;
   background: #fff;
   border-radius: 16px;
   padding: 25px 20px;
@@ -76,15 +83,16 @@ body.light {
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* Dark mode cards */
 body:not(.light) .card {
   background: #374151;
   color: #f3f4f6;
 }
 
-/* Light mode cards */
 body.light .card {
   background: #fff;
   color: #2f3640;
@@ -100,25 +108,22 @@ body.light .card {
   content: "";
   position: absolute;
   top: 0;
-  right: 0;         
+  right: 0;
   height: 100%;
-  width: 6px; /* fixed width for smooth color transition */
+  width: 6px;
   border-radius: 0 16px 16px 0;
   z-index: 0;
-  transition: background-color 0.5s ease; /* smooth color animation */
+  transition: background-color 0.5s ease;
 }
 
-/* ON state - green */
 .card.on::after {
   background-color: #10b981;
 }
 
-/* OFF state - red */
 .card.off::after {
   background-color: #ef4444;
 }
 
-/* Make sure card text is above indicator */
 .card h2, .card span {
   position: relative;
   z-index: 1;
@@ -132,6 +137,96 @@ body.light .card {
 .card span {
   font-size: 24px;
   font-weight: 700;
+}
+
+/* --- SLIDER STYLING --- */
+.card input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #d1d5db;
+  border-radius: 4px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+body:not(.light) .card input[type="range"] {
+  background: #4b5563;
+}
+
+.card input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 4px solid #fff;
+  margin-top: -6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.3s;
+}
+
+body:not(.light) .card input[type="range"]::-webkit-slider-thumb {
+  border: 4px solid #1f2937;
+}
+
+.card input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+}
+
+.card input[type="range"]::-moz-range-thumb,
+.card input[type="range"]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 4px solid #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* --- BUTTON STYLING (Toggles) --- */
+.card button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid;
+  cursor: pointer;
+  font-weight: 600;
+  width: auto;
+  margin-top: 10px;
+  transition: all 0.2s ease-in-out;
+  align-self: center;
+}
+
+.card button {
+  background-color: transparent;
+  color: #6b7280;
+  border-color: #6b7280;
+}
+
+.card.on button {
+  background-color: #10b981;
+  color: #fff;
+  border-color: #10b981;
+}
+
+.card.off button {
+  background-color: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.card.on button:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.card.off button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
 }
 
 /* Chat box */
@@ -152,14 +247,23 @@ body.light .card {
   transition: border 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
 }
 
-/* Dark mode chat box */
+@media (max-width: 600px) {
+  .chat-box input {
+    width: 100%;
+    min-width: 1px;
+  }
+  .chat-box {
+    flex-direction: row;
+    width: 100%;
+  }
+}
+
 body:not(.light) .chat-box input {
   background: #4b5563;
   border: 1px solid #6b7280;
   color: #f3f4f6;
 }
 
-/* Light mode chat box */
 body.light .chat-box input {
   background: #fff;
   border: 1px solid #d1d5db;
@@ -183,7 +287,6 @@ body.light .chat-box input {
   transition: background-color 0.2s, transform 0.1s;
 }
 
-/* Dark mode chat button */
 body:not(.light) .chat-box button {
   background-color: #2563eb;
 }
@@ -192,11 +295,84 @@ body:not(.light) .chat-box button:hover {
   background-color: #1d4ed8;
 }
 
-/* Light mode chat button */
 body.light .chat-box button {
   background-color: #3b82f6;
 }
 
 body.light .chat-box button:hover {
   background-color: #2563eb;
+}
+
+/* --- Logs panel --- */
+.log-panel {
+  margin-top: 30px;
+  padding: 15px;
+  padding-top: 5px;
+  border-radius: 12px;
+  background-color: #111827;
+  color: #f3f4f6;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: background 0.3s, color 0.3s;
+}
+
+body.light .log-panel {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Sticky Header (Logs H2) */
+.log-panel h2 {
+  position: sticky;
+  top: 0;
+  background: inherit;
+  padding: 0px 15px 15px 15px;
+  left: 0;
+  right: 0;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  z-index: 10;
+}
+
+/* Individual log items container (UL) */
+.log-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: -50px 0 0 0;
+}
+
+/* Individual log item (LI) */
+.log-panel li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.3s forwards;
+}
+
+body.light .log-panel li {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.log-message {
+  flex: 1;
+}
+
+.log-time {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Keyframe for "Fly Up" animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
