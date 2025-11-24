@@ -35,6 +35,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "./build/**"
+          strip_components: 1
           target: "/home/ubuntu/app-build"
 
       - name: Deploy to Nginx directory
