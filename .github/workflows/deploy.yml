@@ -12,16 +12,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Node
+      - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
+        working-directory: .
 
       - name: Build React app
         run: npm run build
+        working-directory: .
+
+      - name: Debug – List build output
+        run: ls -R ./build
 
       - name: Copy build files to EC2
         uses: appleboy/scp-action@v0.1.7
