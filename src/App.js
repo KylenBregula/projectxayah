@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import ChatBox from './chatbox';
 import './App.css';
 
+// PLEASE PLEASE PLEASE 
+
+
 function App() {
   // Climate controls
   const [temperature, setTemperature] = useState(72);
