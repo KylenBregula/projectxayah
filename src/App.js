@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import ChatBox from './chatbox';
 import './App.css';
 
-// APP
 
 
 function App() {
