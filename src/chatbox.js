@@ -9,9 +9,7 @@ function ChatBox({ onSend }) {
     setInput('');
   };
 
-  const onKeyDown = (e) => {
-    if (e.key === 'Enter') send();
-  };
+  const onKeyDown = (e) => { if (e.key === 'Enter') send(); };
 
   return (
     <div className="chat-box">
@@ -20,7 +18,7 @@ function ChatBox({ onSend }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={onKeyDown}
-        placeholder="Type a command..."
+        placeholder="Type commands e.g. 'turn kitchen on', 'hot', 'increase fan', 'turn air purifier off'"
       />
       <button onClick={send}>Send</button>
     </div>

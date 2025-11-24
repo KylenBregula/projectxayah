@@ -1,120 +1,150 @@
-import { useState } from 'react';
-import './App.css';
-import mockDB from './api/mockdb.json';
+import { useState, useEffect } from 'react';
 import ChatBox from './chatbox';
-
-// Mock AI parser for demo
-const mockAIResponse = (message) => {
-  const lower = message.toLowerCase();
-  if (lower.includes('cold')) return { thermostatChange: 1 };
-  if (lower.includes('hot')) return { thermostatChange: -1 };
-  if (lower.includes('turn on light')) return { lightStatus: 'on' };
-  if (lower.includes('turn off light')) return { lightStatus: 'off' };
-  return {};
-};
+import './App.css';
 
 function App() {
-  const [lights, setLights] = useState(mockDB.lights);
-  const [thermostats, setThermostats] = useState(mockDB.thermostats);
+  // Climate controls
+  const [temperature, setTemperature] = useState(72);
+  const [humidity, setHumidity] = useState(45);
+  const [fanSpeed, setFanSpeed] = useState(50);
+  const [heatOn, setHeatOn] = useState(false);
+  const [acOn, setAcOn] = useState(false);
 
-  const toggleLight = (id) => {
-    setLights(lights.map(light =>
-      light.id === id ? { ...light, status: light.status === 'on' ? 'off' : 'on' } : light
-    ));
-  };
+  // Home devices
+  const [lights, setLights] = useState({
+    kitchen: false,
+    bedroom: false,
+    livingRoom: false
+  });
+  const [airPurifierOn, setAirPurifierOn] = useState(false);
 
-  const changeTemperature = (id, newTemp) => {
-    setThermostats(thermostats.map(thermo =>
-      thermo.id === id ? { ...thermo, currentTemperature: Number(newTemp) } : thermo
-    ));
-  };
+  // Dark mode
+  const [darkMode, setDarkMode] = useState(true);
 
-  const changeMode = (id, newMode) => {
-    setThermostats(thermostats.map(thermo =>
-      thermo.id === id ? { ...thermo, mode: newMode } : thermo
-    ));
-  };
+  // Apply body class for full-page dark/light background
+  useEffect(() => {
+    document.body.className = darkMode ? '' : 'light';
+  }, [darkMode]);
 
-  const handleAICommand = (message) => {
-    const command = mockAIResponse(message);
+  const handleCommand = (input) => {
+    const cmd = input.toLowerCase();
 
-    if (command.lightStatus) {
-      setLights(lights.map(light => ({ ...light, status: command.lightStatus })));
+    // --- Numeric adjustments ---
+
+    // Temperature
+    let match = cmd.match(/increase (?:the )?temperature(?: by )?(-?\d+)/);
+    if (match) setTemperature(prev => prev + Number(match[1]));
+
+    match = cmd.match(/decrease (?:the )?temperature(?: by )?(-?\d+)/);
+    if (match) setTemperature(prev => prev - Number(match[1]));
+
+    match = cmd.match(/set (?:the )?temperature to (-?\d+)/);
+    if (match) setTemperature(Number(match[1]));
+
+    // Humidity
+    match = cmd.match(/increase (?:the )?humidity(?: by )?(\d+)/);
+    if (match) setHumidity(prev => Math.min(prev + Number(match[1]), 100));
+
+    match = cmd.match(/decrease (?:the )?humidity(?: by )?(\d+)/);
+    if (match) setHumidity(prev => Math.max(prev - Number(match[1]), 0));
+
+    match = cmd.match(/set (?:the )?humidity to (\d+)/);
+    if (match) setHumidity(Number(match[1]));
+
+    // Fan Speed
+    match = cmd.match(/increase (?:the )?fan(?: speed)?(?: by )?(\d+)/);
+    if (match) setFanSpeed(prev => Math.min(prev + Number(match[1]), 100));
+
+    match = cmd.match(/decrease (?:the )?fan(?: speed)?(?: by )?(\d+)/);
+    if (match) setFanSpeed(prev => Math.max(prev - Number(match[1]), 0));
+
+    match = cmd.match(/set (?:the )?fan(?: speed)? to (\d+)/);
+    if (match) setFanSpeed(Number(match[1]));
+
+    // --- Boolean cards ---
+
+    // Heat
+    if (cmd.includes('heat')) {
+      if (cmd.includes('on')) setHeatOn(true);
+      else if (cmd.includes('off')) setHeatOn(false);
     }
 
-    if (command.thermostatChange) {
-      setThermostats(thermostats.map(thermo => ({
-        ...thermo,
-        currentTemperature: thermo.currentTemperature + command.thermostatChange
-      })));
+    // AC
+    if (cmd.includes('ac')) {
+      if (cmd.includes('on')) setAcOn(true);
+      else if (cmd.includes('off')) setAcOn(false);
+    }
+
+    // Air Purifier
+    if (cmd.includes('air purifier')) {
+      if (cmd.includes('on')) setAirPurifierOn(true);
+      else if (cmd.includes('off')) setAirPurifierOn(false);
+    }
+
+    // Lights mapping: handle spaces or combined words
+    const lightKeyMap = {
+      kitchen: 'kitchen',
+      bedroom: 'bedroom',
+      'living room': 'livingRoom',
+      livingroom: 'livingRoom'
+    };
+
+    Object.keys(lightKeyMap).forEach(key => {
+      if (cmd.includes(key)) {
+        const stateKey = lightKeyMap[key];
+        if (cmd.includes('on')) {
+          setLights(prev => ({ ...prev, [stateKey]: true }));
+        } else if (cmd.includes('off')) {
+          setLights(prev => ({ ...prev, [stateKey]: false }));
+        }
+      }
+    });
+
+    // Hot/Cold quick temperature adjustments
+    if (cmd.includes('hot')) {
+      setAcOn(true);
+      setHeatOn(false);
+      setTemperature(prev => prev - 2);
+    } else if (cmd.includes('cold')) {
+      setHeatOn(true);
+      setAcOn(false);
+      setTemperature(prev => prev + 2);
     }
   };
 
   return (
     <div className="App">
-      <header className="header">
-        <h1>Smart Home Automation System</h1>
-        <p className="subtitle">Monitor and control your devices</p>
-      </header>
-
-      <section className="section">
-        <h2>💡 Lights</h2>
-        <ul className="card-list">
-          {lights.map(light => (
-            <li
-              key={light.id}
-              className={`card ${light.status}`}
-              onClick={() => toggleLight(light.id)}
-            >
-              <h3>{light.name}</h3>
-              <p>Status: <span>{light.status}</span></p>
-              <button className="toggle-btn">
-                Turn {light.status === 'on' ? 'Off' : 'On'}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="section">
-        <h2>🌡️ Thermostats</h2>
-        <ul className="card-list">
-          {thermostats.map(thermo => (
-            <li key={thermo.id} className="card">
-              <h3>{thermo.name}</h3>
-              <p>Temperature: <strong>{thermo.currentTemperature}°F</strong></p>
-              <input
-                type="range"
-                min="60"
-                max="85"
-                value={thermo.currentTemperature}
-                onChange={(e) => changeTemperature(thermo.id, e.target.value)}
-              />
-              <p>
-                Mode:
-                <select
-                  value={thermo.mode}
-                  onChange={(e) => changeMode(thermo.id, e.target.value)}
-                >
-                  <option value="Heating">Heating</option>
-                  <option value="Cooling">Cooling</option>
-                  <option value="Auto">Auto</option>
-                </select>
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="section">
-        <h2>💬 Chat Commands</h2>
-
-        <ChatBox onSend={handleAICommand} />
-
-        <p className="hint">
-          Try typing: "I am cold", "I am hot", "Turn off light", "Turn on light"
+      <div className="header">
+        <h1 className="title">Home Dashboard</h1>
+        <button className="dark-toggle" onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? 'Light Mode' : 'Dark Mode'}
+        </button>
+        <p className="subtitle">
+          Control temperature, humidity, fan, heat, AC, lights, air purifier, and theme via chat commands
         </p>
-      </section>
+      </div>
+
+      <div className="card-list">
+        {/* Row 1 - numeric values */}
+        <div className="card"><h2>Temperature</h2><span>{temperature}°F</span></div>
+        <div className="card"><h2>Humidity</h2><span>{humidity}%</span></div>
+        <div className="card"><h2>Fan Speed</h2><span>{fanSpeed}%</span></div>
+
+        {/* Row 2 - boolean values */}
+        <div className={`card ${heatOn ? 'on' : 'off'}`}><h2>Heat</h2><span>{heatOn ? 'ON' : 'OFF'}</span></div>
+        <div className={`card ${acOn ? 'on' : 'off'}`}><h2>AC</h2><span>{acOn ? 'ON' : 'OFF'}</span></div>
+        <div className={`card ${airPurifierOn ? 'on' : 'off'}`}><h2>Air Purifier</h2><span>{airPurifierOn ? 'ON' : 'OFF'}</span></div>
+
+        {/* Row 3 - lights */}
+        {Object.keys(lights).map(room => (
+          <div key={room} className={`card ${lights[room] ? 'on' : 'off'}`}>
+            <h2>{room.charAt(0).toUpperCase() + room.slice(1)}</h2>
+            <span>{lights[room] ? 'ON' : 'OFF'}</span>
+          </div>
+        ))}
+      </div>
+
+      <ChatBox onSend={handleCommand} />
     </div>
   );
 }
