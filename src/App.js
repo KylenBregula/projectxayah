@@ -133,7 +133,7 @@ function App() {
   return (
     <div className="App">
       <div className="header">
-        <h1 className="title">Home Dashboard</h1>
+        <h1 className="title">Smart Home Dashboard</h1>
         <button className="dark-toggle" onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
