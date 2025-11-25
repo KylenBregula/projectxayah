@@ -102,6 +102,32 @@ function App() {
       updateDevice(setAcOn, 'acOn', false, 'Cold detected: AC OFF');
       updateDevice(setTemperature, 'temperature', temperature + 2, 'Cold detected: Temp +2');
     }
+
+    // Leaving command - minimal energy mode
+    if (cmd.includes('leaving')) {
+      const newLights = Object.fromEntries(Object.keys(lights).map(room => [room, false]));
+      updateDevice(setLights, 'lights', newLights, 'Leaving: All lights OFF');
+      updateDevice(setHeatOn, 'heatOn', false, 'Leaving: Heat OFF');
+      updateDevice(setAcOn, 'acOn', false, 'Leaving: AC OFF');
+      updateDevice(setFanSpeed, 'fanSpeed', 20, 'Leaving: Fan speed set to 20%');
+      updateDevice(setTemperature, 'temperature', 70, 'Leaving: Temperature set to 70°F');
+      updateDevice(setAirPurifierOn, 'airPurifierOn', false, 'Leaving: Air Purifier OFF');
+      addLog('House set to minimal energy mode because you are leaving.');
+    }
+
+    // Coming command - restore comfortable state
+    if (cmd.includes('coming')) {
+      updateDevice(setHeatOn, 'heatOn', true, 'Coming: Heat ON');
+      updateDevice(setAcOn, 'acOn', false, 'Coming: AC OFF');
+      updateDevice(setFanSpeed, 'fanSpeed', 50, 'Coming: Fan speed set to 50%');
+      updateDevice(setTemperature, 'temperature', 72, 'Coming: Temperature set to 72°F');
+      updateDevice(setAirPurifierOn, 'airPurifierOn', true, 'Coming: Air Purifier ON');
+
+      const newLights = Object.fromEntries(Object.keys(lights).map(room => [room, true]));
+      updateDevice(setLights, 'lights', newLights, 'Coming: All lights ON');
+
+      addLog('House set to comfortable mode because you are coming.');
+    }
   };
 
   return (
@@ -160,10 +186,8 @@ function App() {
       {/* Chat box */}
       <ChatBox onSend={handleCommand} />
 
-      {/* Logs label */}
+      {/* Logs */}
       <div className="logs-label">Logs</div>
-
-      {/* Logs panel */}
       <div className="log-panel">
         <ul>
           {logs.map((log, i) => (
