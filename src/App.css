@@ -1,4 +1,6 @@
-/* Full-page dark/light background */
+/* Global Website Styles */
+
+/* based body with dark mode as default */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -7,6 +9,7 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+/* Light mode override */
 body.light {
   background-color: #f5f6fa;
   color: #2f3640;
@@ -59,7 +62,7 @@ body.light {
   color: #fff;
 }
 
-/* Card grid */
+/* Card grid of the 3x3 */
 .card-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -88,16 +91,19 @@ body.light {
   justify-content: space-between;
 }
 
+/* Dark mode card override */
 body:not(.light) .card {
   background: #374151;
   color: #f3f4f6;
 }
 
+/* Light mode card override */
 body.light .card {
   background: #fff;
   color: #2f3640;
 }
 
+/* Card hover effect */
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.12);
@@ -116,9 +122,11 @@ body.light .card {
   transition: background-color 0.5s ease;
 }
 
+/* Indicator colors based on status */
 .card.on::after { background-color: #10b981; }
 .card.off::after { background-color: #ef4444; }
 
+/* Card content */
 .card h2, .card span { position: relative; z-index: 1; }
 .card h2 { font-size: 20px; margin-bottom: 12px; }
 .card span { font-size: 24px; font-weight: 700; }
@@ -136,8 +144,10 @@ body.light .card {
   transition: background 0.2s;
 }
 
+/* Dark mode slider override */
 body:not(.light) .card input[type="range"] { background: #4b5563; }
 
+/* Slider thumb */
 .card input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -151,8 +161,10 @@ body:not(.light) .card input[type="range"] { background: #4b5563; }
   transition: transform 0.1s, box-shadow 0.1s, background 0.3s;
 }
 
+/* Dark mode slider thumb override */
 body:not(.light) .card input[type="range"]::-webkit-slider-thumb { border: 4px solid #1f2937; }
 
+/* Slider thumb hover and active states */
 .card input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.1); }
 .card input[type="range"]::-moz-range-thumb,
 .card input[type="range"]::-ms-thumb { width: 20px; height: 20px; border-radius: 50%; background: #3b82f6; border: 4px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
@@ -171,6 +183,7 @@ body:not(.light) .card input[type="range"]::-webkit-slider-thumb { border: 4px s
   align-self: center;
 }
 
+/* Button colors based on status */
 .card button { background-color: transparent; color: #6b7280; border-color: #6b7280; }
 .card.on button { background-color: #10b981; color: #fff; border-color: #10b981; }
 .card.off button { background-color: #ef4444; color: #fff; border-color: #ef4444; }
@@ -215,6 +228,7 @@ body.light .log-panel { background-color: #f3f4f6; color: #1f2937; }
 
 .log-panel ul { list-style: none; padding: 0; margin: 0; }
 
+/* Log entry styles with fade-in animation */
 .log-panel li {
   display: flex;
   justify-content: space-between;
@@ -227,6 +241,7 @@ body.light .log-panel { background-color: #f3f4f6; color: #1f2937; }
   animation: fadeIn 0.3s forwards;
 }
 
+/* Dark mode log entry override */
 body.light .log-panel li { border-bottom: 1px solid rgba(0,0,0,0.1); }
 
 .log-message { flex: 1; }

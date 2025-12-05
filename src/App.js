@@ -1,3 +1,6 @@
+// main app component
+
+// libraries and components
 import { useState, useEffect, useRef } from 'react';
 import ChatBox from './chatbox';
 import './App.css';
@@ -15,10 +18,10 @@ function App() {
   const [lights, setLights] = useState({ ...mockBackend.lights });
   const [airPurifierOn, setAirPurifierOn] = useState(mockBackend.airPurifierOn);
 
-  // Dark mode
+  // Dark mode default is true
   const [darkMode, setDarkMode] = useState(true);
 
-  // Logs
+  // array for Logs
   const [logs, setLogs] = useState([]);
   const logEndRef = useRef(null);
 
@@ -61,18 +64,26 @@ function App() {
       const action = m[1];
       let target = m[2];
       const value = Number(m[3]);
+      
+      // detects words to then change based on text input 
+
       if (target.includes('fan')) target = 'fanSpeed';
 
+      // will increase values
       if (action === 'increase') {
         if (target === 'temperature') updateDevice(setTemperature, 'temperature', temperature + value, `Increased temperature by ${value}`);
         if (target === 'humidity') updateDevice(setHumidity, 'humidity', Math.min(humidity + value, 100), `Increased humidity by ${value}`);
         if (target === 'fanSpeed') updateDevice(setFanSpeed, 'fanSpeed', Math.min(fanSpeed + value, 100), `Increased fan speed by ${value}`);
       }
+
+      // will decrease values
       if (action === 'decrease') {
         if (target === 'temperature') updateDevice(setTemperature, 'temperature', temperature - value, `Decreased temperature by ${value}`);
         if (target === 'humidity') updateDevice(setHumidity, 'humidity', Math.max(humidity - value, 0), `Decreased humidity by ${value}`);
         if (target === 'fanSpeed') updateDevice(setFanSpeed, 'fanSpeed', Math.max(fanSpeed - value, 0), `Decreased fan speed by ${value}`);
       }
+
+      // will set values directly
       if (action === 'set') {
         if (target === 'temperature') updateDevice(setTemperature, 'temperature', value, `Set temperature to ${value}`);
         if (target === 'humidity') updateDevice(setHumidity, 'humidity', value, `Set humidity to ${value}`);
