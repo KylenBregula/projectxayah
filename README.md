@@ -29,4 +29,4 @@ npm install      # Install dependencies
 npm run build    # Create production build
 npm test         # Run tests
 
-# the link to the cloud hosted website is in the report
+# The link to the cloud hosted website is in the report
